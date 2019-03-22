@@ -27,7 +27,7 @@ func TaxesToCart(baseURL string, client *http.Client, items models.CartItemRespo
 			Rate:         2,
 		}
 
-		FullPayload := &models.TopLevelAddToCartRequest{
+		FullPayload := &models.TopLevelRequest{
 			Data: *addTaxToCartItemData,
 		}
 

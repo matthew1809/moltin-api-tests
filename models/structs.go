@@ -87,8 +87,8 @@ type Value struct {
 	IncludesTax bool   `json: "includes_tax"`
 }
 
-// TopLevelAddToCartRequest builds the payload for add to cart
-type TopLevelAddToCartRequest struct {
+// TopLevelRequest builds the payload for add to cart
+type TopLevelRequest struct {
 	Data interface{} `json:"data"`
 }
 

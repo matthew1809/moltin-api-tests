@@ -27,7 +27,7 @@ func ProductsToCart(baseURL string, client *http.Client, productIDs []string, to
 				ItemType: "cart_item",
 			}
 		
-			FullPayload := &models.TopLevelAddToCartRequest{
+			FullPayload := &models.TopLevelRequest{
 				Data: *addToCartData,
 			}
 		
