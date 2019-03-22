@@ -208,3 +208,11 @@ type AddPromotionItem struct {
 	Type string `json:"type"`
 	Code string `json:"code"`
 }
+
+type AuthenticationResponse struct {
+	Expires int
+	Identifier string
+	ExpiresIn int `json:"expires_in"`
+	AccessToken string `json:"access_token"`
+	TokenType string `json:"token_type"`
+}
