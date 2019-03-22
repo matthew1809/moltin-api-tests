@@ -12,7 +12,6 @@ import (
 
 // TaxesToCart uses a waitgroup and go routines to add a single product to the cart multiple times
 func TaxesToCart(baseURL string, client *http.Client, items models.CartItemResponse, token string, cartID string) {
-		// fmt.Println("Adding taxes")
 		var wg sync.WaitGroup
 
 		for i := 0; i < len(items.Data); i++ {
