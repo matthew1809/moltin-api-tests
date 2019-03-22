@@ -4,17 +4,15 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"sync"
 	"github.com/matthew1809/cart-tests/models"
 	"github.com/matthew1809/cart-tests/request"
 )
 
 // Cart fetches cart
-func Cart(baseURL string, client http.Client, token string) int {
+func Cart(baseURL string, client http.Client, token string, cartID string) int {
 
-	var wg sync.WaitGroup
-	wg.Add(1)
-	res := request.GenericRequest(&wg, 0, baseURL, client, "GET", nil, token, "get.Cart", 200)
+	fullURL := baseURL + "/carts/" + cartID
+	res := request.GenericRequest(fullURL, client, "GET", nil, token, "get.Cart", 200)
 	
 	var cart models.CartResponse
 	unmarshallErr := json.Unmarshal(res, &cart)

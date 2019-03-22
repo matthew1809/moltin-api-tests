@@ -3,12 +3,14 @@ package request
 import (
 	"fmt"
 	"net/http"
+	"sync"
 	"io"
 	"io/ioutil"
 )
 
-// GenericRequest builds and makes an API call to Moltin
-func GenericRequest(path string, client http.Client, method string, payload io.Reader, token string, name string, expectedCode int) []byte {
+// AsyncGenericRequest builds and makes an API call to Moltin, but also takes a waitgroup
+func AsyncGenericRequest(wg *sync.WaitGroup, ID int, path string, client http.Client, method string, payload io.Reader, token string, name string, expectedCode int) []byte {
+	defer wg.Done()
 
 	req, err := http.NewRequest(method, path, payload)
 	req.Header.Set("Authorization", token)

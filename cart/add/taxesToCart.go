@@ -11,13 +11,13 @@ import (
 )
 
 // TaxesToCart uses a waitgroup and go routines to add a single product to the cart multiple times
-func TaxesToCart(baseURL string, client *http.Client, items models.CartItemResponse, token string) {
+func TaxesToCart(baseURL string, client *http.Client, items models.CartItemResponse, token string, cartID string) {
 		// fmt.Println("Adding taxes")
 		var wg sync.WaitGroup
 
 		for i := 0; i < len(items.Data); i++ {
 
-		fullURL := baseURL + "/" + items.Data[i].ID + "/taxes"
+		fullURL := baseURL + "/carts/" + cartID + "/items/" + items.Data[i].ID + "/taxes"
 
 		addTaxToCartItemData := &models.AddTaxToCartItemRequest{
 			Type:         "tax_item",
@@ -39,7 +39,7 @@ func TaxesToCart(baseURL string, client *http.Client, items models.CartItemRespo
 
 
 		wg.Add(1)
-		go request.GenericRequest(&wg, i, fullURL, *client, "POST",  bytes.NewBuffer(bytesRepresentation), token, "add.taxToCartItem", 201)
+		go request.AsyncGenericRequest(&wg, i, fullURL, *client, "POST",  bytes.NewBuffer(bytesRepresentation), token, "add.taxToCartItem", 201)
 	}
 
 	// fmt.Println("Main: Waiting for workers to finish")

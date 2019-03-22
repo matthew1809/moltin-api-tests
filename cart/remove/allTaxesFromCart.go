@@ -9,7 +9,7 @@ import (
 )
 
 // TaxFromCartAsync does a thing
-func TaxFromCartAsync(baseURL string, client *http.Client, items models.CartItemResponse, token string) {
+func TaxFromCartAsync(baseURL string, client *http.Client, items models.CartItemResponse, token string, cartID string) {
 	var wg sync.WaitGroup
 
 	for i := 0; i < len(items.Data); i++ {
@@ -17,9 +17,9 @@ func TaxFromCartAsync(baseURL string, client *http.Client, items models.CartItem
 		for z := 0; z < len(items.Data[i].Relationships.Taxes.Data); z++ {
 			
 			taxItemID := items.Data[i].Relationships.Taxes.Data[z].ID
-			fullURL := baseURL + "/" + items.Data[i].ID + "/taxes/" + taxItemID
+			fullURL := baseURL  + "/carts/" + cartID + "/items/" + items.Data[i].ID + "/taxes/" + taxItemID
 
-			go request.GenericRequest(&wg, i, fullURL, *client, "DELETE",  nil, token, "add.remove.taxFromCartItem", 204)
+			go request.AsyncGenericRequest(&wg, i, fullURL, *client, "DELETE",  nil, token, "add.remove.taxFromCartItem", 204)
 			wg.Wait()
 		}
 	}

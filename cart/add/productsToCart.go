@@ -11,9 +11,11 @@ import (
 )
 
 // ProductsToCart uses a waitgroup and go routines to add a single product to the cart multiple times
-func ProductsToCart(baseURL string, client *http.Client, productIDs []string, token string) {
+func ProductsToCart(baseURL string, client *http.Client, productIDs []string, token string, cartID string) {
 
 	var wg sync.WaitGroup
+
+	fullURL := baseURL + "/carts/" + cartID + "/items"
 
 	for a := 0; a < 4; a++ {
 		for i := 0; i < len(productIDs); i++ {
@@ -35,7 +37,7 @@ func ProductsToCart(baseURL string, client *http.Client, productIDs []string, to
 				fmt.Printf("Error marshalling JSON, failed with %s\n", err)
 			}
 	
-			go request.GenericRequest(&wg, a + i, baseURL, *client, "POST",  bytes.NewBuffer(bytesRepresentation), token, "add.ProductToCart", 201)
+			go request.AsyncGenericRequest(&wg, a + i, fullURL, *client, "POST",  bytes.NewBuffer(bytesRepresentation), token, "add.ProductToCart", 201)
 		}
 		wg.Wait()
 	}

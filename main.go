@@ -12,49 +12,47 @@ func testTaxItems(variables Config) bool {
 
 	fmt.Println("Starting the application...")
 
-	cartBaseURL := variables.baseURL + "/carts/" + variables.cartID
-	cartItemsBaseURL := variables.baseURL + "/carts/" + variables.cartID + "/items"
-
 	client := &http.Client{}
 	taxAmounts := map[string]int{}
 
-	get.Cart(cartBaseURL, *client, variables.token)
+	get.Cart(variables.baseURL, *client, variables.token, variables.cartID)
 
-	cartItems := get.CartItems(cartItemsBaseURL, *client, variables.token)
+	cartItems := get.CartItems(variables.baseURL, *client, variables.token, variables.cartID)
 
-	remove.AllProductsFromCart(cartItemsBaseURL, client, cartItems, variables.token)
+	if(len(cartItems.Data) > 0) { 
+		remove.AllProductsFromCart(variables.baseURL, client, cartItems, variables.token, variables.cartID)
+		get.CartItems(variables.baseURL, *client, variables.token, variables.cartID)
+	}
 
-	get.CartItems(cartItemsBaseURL, *client, variables.token)
+	add.ProductsToCart(variables.baseURL, client, variables.productIDs, variables.token, variables.cartID)
 
-	add.ProductsToCart(cartItemsBaseURL, client, variables.productIDs, variables.token)
+	cartItems2 := get.CartItems(variables.baseURL, *client, variables.token, variables.cartID)
 
-	cartItems2 := get.CartItems(cartItemsBaseURL, *client, variables.token)
+	get.Cart(variables.baseURL, *client, variables.token, variables.cartID)
 
-	get.Cart(cartBaseURL, *client, variables.token)
+	add.TaxesToCart(variables.baseURL, client, cartItems2, variables.token, variables.cartID)
 
-	add.TaxesToCart(cartItemsBaseURL, client, cartItems2, variables.token)
-
-	taxAmountAfterFirstAdd := get.Cart(cartBaseURL, *client, variables.token)
+	taxAmountAfterFirstAdd := get.Cart(variables.baseURL, *client, variables.token, variables.cartID)
 
 	taxAmounts["first"] = taxAmountAfterFirstAdd
 
-	cartItems3 := get.CartItems(cartItemsBaseURL, *client, variables.token)
+	cartItems3 := get.CartItems(variables.baseURL, *client, variables.token, variables.cartID)
 
-	remove.TaxFromCartAsync(cartItemsBaseURL, client, cartItems3, variables.token)
+	remove.TaxFromCartAsync(variables.baseURL, client, cartItems3, variables.token, variables.cartID)
 
-	get.Cart(cartBaseURL, *client, variables.token)
+	get.Cart(variables.baseURL, *client, variables.token, variables.cartID)
 
-	cartItems4 := get.CartItems(cartItemsBaseURL, *client, variables.token)
+	cartItems4 := get.CartItems(variables.baseURL, *client, variables.token, variables.cartID)
 
-	add.TaxesToCart(cartItemsBaseURL, client, cartItems4, variables.token)
+	add.TaxesToCart(variables.baseURL, client, cartItems4, variables.token, variables.cartID)
 
-	taxAmountAfterSecondAdd := get.Cart(cartBaseURL, *client, variables.token)
+	taxAmountAfterSecondAdd := get.Cart(variables.baseURL, *client, variables.token, variables.cartID)
 
 	taxAmounts["second"] = taxAmountAfterSecondAdd
 
 	fmt.Println(taxAmounts)
 
-	if taxAmounts["first"] != taxAmounts["second"] {
+	if taxAmounts["first-taxes"] != taxAmounts["second-taxes"] {
 		return false
 	}
 

@@ -9,16 +9,16 @@ import (
 )
 
 // AllProductsFromCart uses a waitgroup and go routines to remove all products from the cart
-func AllProductsFromCart(baseURL string, client *http.Client, items models.CartItemResponse, token string) {
+func AllProductsFromCart(baseURL string, client *http.Client, items models.CartItemResponse, token string, cartID string) {
 
 	var wg sync.WaitGroup
 
 	for i := 0; i < len(items.Data); i++ {
 		wg.Add(1)
 
-		fullURL := baseURL + "/" + items.Data[i].ID
+		fullURL := baseURL + "/carts/" + cartID + "/items/" + items.Data[i].ID
 
-		go request.GenericRequest(&wg, i, fullURL, *client, "DELETE",  nil, token, "add.remove.itemFromCart", 200)
+		go request.AsyncGenericRequest(&wg, i, fullURL, *client, "DELETE",  nil, token, "add.remove.itemFromCart", 200)
 	}
 
 	wg.Wait()
