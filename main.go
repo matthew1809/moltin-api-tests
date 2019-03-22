@@ -10,6 +10,7 @@ func main() {
 	variables := config.NewConfig()
 	client := &http.Client{}
 
-	tests.RunTaxItemsTest(variables)
-	tests.TestCheckout(variables, client)
+	tests.TestPromotions(variables, client)
+	// tests.RunTaxItemsTest(variables)
+	// tests.TestCheckout(variables, client)
 }

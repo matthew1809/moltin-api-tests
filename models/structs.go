@@ -49,7 +49,7 @@ type CartItemResponse struct {
 
 type CartItem struct {
 	ID            string        `json: "id"`
-	ItemType      string        `json: "type"`
+	Type      	  string        `json: "type"`
 	Description   string        `json: "description"`
 	Sku           string        `json: "sku"`
 	Quantity      int           `json: "quantity"`
@@ -202,4 +202,9 @@ type CheckoutResponse struct {
 			} `json:"items"`
 		} `json:"relationships"`
 	} `json:"data"`
+}
+
+type AddPromotionItem struct {
+	Type string `json:"type"`
+	Code string `json:"code"`
 }
