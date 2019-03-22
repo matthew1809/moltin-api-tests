@@ -33,10 +33,16 @@ func main() {
 		variables := config.NewConfig()
 		client := &http.Client{}
 
+		if(variables.Token == "0") {
+			fmt.Println("Cannot proceed without authenticating")
+			return
+		}
+
 		switch *test {
 			case "TestPromotions": tests.TestPromotions(variables, client)
 			case "TestTaxItems": tests.TestTaxItems(variables, client)
 			case "TestCheckout": tests.TestCheckout(variables, client)
+			case "TestOrders": tests.TestOrders(variables, client)
 			case "TestCartWithTaxesAndPromotion": tests.TestCartWithTaxesAndPromotion(variables, client)
 			default: fmt.Println("You have not entered a valid test")
 		}

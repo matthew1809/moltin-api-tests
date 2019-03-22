@@ -17,30 +17,32 @@ type CartResponse struct {
 		Links struct {
 			Self string `json:"self"`
 		} `json:"links"`
-		Meta struct {
-			DisplayPrice struct {
-				WithTax struct {
-					Amount    int    `json:"amount"`
-					Currency  string `json:"currency"`
-					Formatted string `json:"formatted"`
-				} `json:"with_tax"`
-				WithoutTax struct {
-					Amount    int    `json:"amount"`
-					Currency  string `json:"currency"`
-					Formatted string `json:"formatted"`
-				} `json:"without_tax"`
-				Tax struct {
-					Amount    int    `json:"amount"`
-					Currency  string `json:"currency"`
-					Formatted string `json:"formatted"`
-				} `json:"tax"`
-			} `json:"display_price"`
-			Timestamps struct {
-				CreatedAt time.Time `json:"created_at"`
-				UpdatedAt time.Time `json:"updated_at"`
-			} `json:"timestamps"`
-		} `json:"meta"`
+		Meta `json:"meta"`
 	} `json:"data"`
+}
+
+type Meta struct {
+	DisplayPrice struct {
+		WithTax struct {
+			Amount    int    `json:"amount"`
+			Currency  string `json:"currency"`
+			Formatted string `json:"formatted"`
+		} `json:"with_tax"`
+		WithoutTax struct {
+			Amount    int    `json:"amount"`
+			Currency  string `json:"currency"`
+			Formatted string `json:"formatted"`
+		} `json:"without_tax"`
+		Tax struct {
+			Amount    int    `json:"amount"`
+			Currency  string `json:"currency"`
+			Formatted string `json:"formatted"`
+		} `json:"tax"`
+	} `json:"display_price"`
+	Timestamps struct {
+		CreatedAt time.Time `json:"created_at"`
+		UpdatedAt time.Time `json:"updated_at"`
+	} `json:"timestamps"`
 }
 
 type CartItemResponse struct {
@@ -207,6 +209,58 @@ type CheckoutResponse struct {
 type AddPromotionItem struct {
 	Type string `json:"type"`
 	Code string `json:"code"`
+}
+
+type OrderResponse struct {
+	Data struct {
+		Type     string `json:"type"`
+		ID       string `json:"id"`
+		Status   string `json:"status"`
+		Payment  string `json:"payment"`
+		Shipping string `json:"shipping"`
+		Customer
+		ShippingAddress
+		BillingAddress
+		Links struct {
+		} `json:"links"`
+		Meta `json:"meta"`
+		Relationships struct {
+			Items struct {
+				Data []struct {
+					Type string `json:"type"`
+					ID   string `json:"id"`
+				} `json:"data"`
+			} `json:"items"`
+		} `json:"relationships"`
+	} `json:"data"`
+}
+
+type Order struct {
+		Type     string `json:"type"`
+		ID       string `json:"id"`
+		Status   string `json:"status"`
+		Payment  string `json:"payment"`
+		Shipping string `json:"shipping"`
+		Customer
+		ShippingAddress
+		BillingAddress
+		Links struct {
+		} `json:"links"`
+		Meta `json:"meta"`
+		Relationships struct {
+			Items struct {
+				Data []struct {
+					Type string `json:"type"`
+					ID   string `json:"id"`
+				} `json:"data"`
+			} `json:"items"`
+		} `json:"relationships"`
+}
+
+type OrdersResponse struct {
+	Data []struct {
+		Order
+	}
 }
 
 type AuthenticationResponse struct {
