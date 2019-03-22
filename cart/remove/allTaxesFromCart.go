@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"sync"
-
+	"github.com/matthew1809/cart-tests/request"
 	"github.com/matthew1809/cart-tests/models"
 )
 
@@ -14,7 +14,14 @@ func TaxFromCartAsync(baseURL string, client *http.Client, items models.CartItem
 
 	for i := 0; i < len(items.Data); i++ {
 		wg.Add(1)
-		go TaxItemFromCartItem(&wg, baseURL, items.Data[i], *client, token)
+		for z := 0; z < len(items.Data[i].Relationships.Taxes.Data); z++ {
+			
+			taxItemID := items.Data[i].Relationships.Taxes.Data[z].ID
+			fullURL := baseURL + "/" + items.Data[i].ID + "/taxes/" + taxItemID
+
+			go request.GenericRequest(&wg, i, fullURL, *client, "DELETE",  nil, token, "add.remove.taxFromCartItem", 204)
+			wg.Wait()
+		}
 	}
 
 	wg.Wait()

@@ -3,37 +3,21 @@ package get
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"net/http"
-
+	"sync"
 	"github.com/matthew1809/cart-tests/models"
+	"github.com/matthew1809/cart-tests/request"
 )
 
 // Cart fetches cart
 func Cart(baseURL string, client http.Client, token string) int {
 
-	req, _ := http.NewRequest("GET", baseURL, nil)
-	req.Header.Set("Authorization", token)
-	req.Header.Set("content-type", "application/json")
-	res, err := client.Do(req)
-
-	if err != nil {
-		fmt.Printf("Error making get cart request, failed with %s\n", err)
-	}
-
-	response, err := ioutil.ReadAll(res.Body)
-	if err != nil {
-		fmt.Printf("Error reading get cart response, failed with %s\n", err)
-	}
-
-	res.Body.Close()
-
-    if res.StatusCode != 200 {
-        fmt.Println("Bad response code from get.Cart:", res.StatusCode, http.StatusText(res.StatusCode))
-    }
-
+	var wg sync.WaitGroup
+	wg.Add(1)
+	res := request.GenericRequest(&wg, 0, baseURL, client, "GET", nil, token, "get.Cart", 200)
+	
 	var cart models.CartResponse
-	unmarshallErr := json.Unmarshal(response, &cart)
+	unmarshallErr := json.Unmarshal(res, &cart)
 
 	if unmarshallErr != nil {
 		fmt.Printf("Error reading get cart response, failed with %s\n", unmarshallErr)

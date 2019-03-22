@@ -66,7 +66,7 @@ func testTaxItems(variables Config) bool {
 func main() {
 	variables := NewConfig()
 
-	results := map[string]int{"accurate": 0, "innacurate": 0}
+	results := map[string]int{"accurate": 0, "inaccurate": 0}
 
 	for i := 0; i < variables.runs; i++ {
 		if(testTaxItems(variables) == true) {

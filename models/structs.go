@@ -91,3 +91,9 @@ type Value struct {
 type TopLevelAddToCartRequest struct {
 	Data interface{} `json:"data"`
 }
+
+type AddToCartRequest struct {
+	ID	string `json:"id"`
+	Quantity int `json:"quantity"`
+	ItemType string `json:"type"`
+}

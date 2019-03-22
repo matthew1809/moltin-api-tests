@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"sync"
-
+	"github.com/matthew1809/cart-tests/request"
 	"github.com/matthew1809/cart-tests/models"
 )
 
@@ -15,7 +15,10 @@ func AllProductsFromCart(baseURL string, client *http.Client, items models.CartI
 
 	for i := 0; i < len(items.Data); i++ {
 		wg.Add(1)
-		go ItemFromCart(&wg, i, baseURL, *client, items.Data[i], token)
+
+		fullURL := baseURL + "/" + items.Data[i].ID
+
+		go request.GenericRequest(&wg, i, fullURL, *client, "DELETE",  nil, token, "add.remove.itemFromCart", 200)
 	}
 
 	wg.Wait()
