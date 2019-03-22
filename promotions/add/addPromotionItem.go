@@ -35,8 +35,6 @@ func PromotionItem(baseURL string, client *http.Client, token string, cartID str
 
 	if unmarshallErr != nil {
 		fmt.Printf("Error reading get cart items response, failed with %s\n", unmarshallErr)
-	} else {
-		fmt.Println("Number of unique cart items: ", len(items.Data))
 	}
 	
 	fmt.Println("Add Promotion: Completed")
