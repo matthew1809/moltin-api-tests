@@ -29,6 +29,10 @@ func CartItems(baseURL string, client http.Client, token string) models.CartItem
 
 	res.Body.Close()
 
+	if res.StatusCode != 200 {
+        fmt.Println("Bad response code from get.CartItems:", res.StatusCode, http.StatusText(res.StatusCode))
+    }
+
 	var items models.CartItemResponse
 	unmarshallErr := json.Unmarshal(response, &items)
 

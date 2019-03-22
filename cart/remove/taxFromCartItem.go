@@ -26,10 +26,14 @@ func TaxItemFromCartItem(wg *sync.WaitGroup, baseURL string, item models.CartIte
 			fmt.Printf("The HTTP request failed with error %s\n", err)
 		}
 
-		_, err = client.Do(req)
+		res, err := client.Do(req)
 
 		if err != nil {
 			fmt.Printf("The HTTP request failed with error %s\n", err)
+		}
+
+		if res.StatusCode != 204 {
+			fmt.Println("Bad response code from remove.TaxItemFromCartItem:", res.StatusCode, http.StatusText(res.StatusCode))
 		}
 
 		// fmt.Println("deleted tax item", item.ID)

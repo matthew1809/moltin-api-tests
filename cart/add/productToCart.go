@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"net/http"
 	"sync"
-	"io/ioutil"
 	"github.com/matthew1809/cart-tests/models"
 )
 
@@ -46,14 +45,10 @@ func ProductToCart(wg *sync.WaitGroup, outerID int, innerID int, baseURL string,
 		fmt.Printf("Error adding to cart, failed with %s\n", err)
 	}
 
-	response, _ := ioutil.ReadAll(res.Body)
-
-	if err != nil {
-		fmt.Printf("Error reading get cart response, failed with %s\n", err)
-	} else {
-		fmt.Println(string(response))
+	if res.StatusCode != 201 {
+        fmt.Println("Bad response code from add.ProductToCart:", res.StatusCode, http.StatusText(res.StatusCode))
 	}
-
+	
 	res.Body.Close()
 	// fmt.Println("added two of", productID, "to cart")
 	// fmt.Printf("Worker %v %v: Finished\n", outerID, innerID)

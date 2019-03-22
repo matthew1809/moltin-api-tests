@@ -26,4 +26,8 @@ func ItemFromCart(wg *sync.WaitGroup, ID int, baseURL string, client http.Client
 	}
 
 	res.Body.Close()
+
+	if res.StatusCode != 204 {
+        fmt.Println("Bad response code from remove.ItemFromCart:", res.StatusCode, http.StatusText(res.StatusCode))
+    }
 }

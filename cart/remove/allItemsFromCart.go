@@ -8,8 +8,8 @@ import (
 	"github.com/matthew1809/cart-tests/models"
 )
 
-// ProductsFromCartAsync uses a waitgroup and go routines to remove all products from the cart
-func ProductsFromCartAsync(baseURL string, client *http.Client, items models.CartItemResponse, token string) {
+// AllProductsFromCart uses a waitgroup and go routines to remove all products from the cart
+func AllProductsFromCart(baseURL string, client *http.Client, items models.CartItemResponse, token string) {
 
 	var wg sync.WaitGroup
 

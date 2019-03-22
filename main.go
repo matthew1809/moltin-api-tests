@@ -9,46 +9,47 @@ import (
 )
 
 func testTaxItems() {
+
 	fmt.Println("Starting the application...")
 
-	cartBaseURL := "https://api.moltin.com/v2/carts/test38"
-	cartItemsBaseURL := "https://api.moltin.com/v2/carts/test38/items"
-	token := "2701731ffae55867226a6318c4f941378623389f"
-	client := &http.Client{}
+	variables := NewConfig()
+	cartBaseURL := variables.baseURL + "/carts/" + variables.cartID
+	cartItemsBaseURL := variables.baseURL + "/carts/" + variables.cartID + "/items"
 
+	client := &http.Client{}
 	taxAmounts := []int{}
 
-	get.Cart(cartBaseURL, *client, token)
+	get.Cart(cartBaseURL, *client, variables.token)
 
-	cartItems := get.CartItems(cartItemsBaseURL, *client, token)
+	cartItems := get.CartItems(cartItemsBaseURL, *client, variables.token)
 
-	remove.ProductsFromCartAsync(cartItemsBaseURL, client, cartItems, token)
+	remove.AllProductsFromCart(cartItemsBaseURL, client, cartItems, variables.token)
 
-	get.CartItems(cartItemsBaseURL, *client, token)
+	get.CartItems(cartItemsBaseURL, *client, variables.token)
 
-	add.ProductsToCart(cartItemsBaseURL, client, token)
+	add.ProductsToCart(cartItemsBaseURL, client, variables.productIDs, variables.token)
 
-	cartItems2 := get.CartItems(cartItemsBaseURL, *client, token)
+	cartItems2 := get.CartItems(cartItemsBaseURL, *client, variables.token)
 
-	get.Cart(cartBaseURL, *client, token)
+	get.Cart(cartBaseURL, *client, variables.token)
 
-	add.TaxesToCart(cartItemsBaseURL, client, cartItems2, token)
+	add.TaxesToCart(cartItemsBaseURL, client, cartItems2, variables.token)
 
-	taxAmountAfterFirstAdd := get.Cart(cartBaseURL, *client, token)
+	taxAmountAfterFirstAdd := get.Cart(cartBaseURL, *client, variables.token)
 
 	taxAmounts = append(taxAmounts, taxAmountAfterFirstAdd)
 
-	cartItems3 := get.CartItems(cartItemsBaseURL, *client, token)
+	cartItems3 := get.CartItems(cartItemsBaseURL, *client, variables.token)
 
-	remove.TaxFromCartAsync(cartItemsBaseURL, client, cartItems3, token)
+	remove.TaxFromCartAsync(cartItemsBaseURL, client, cartItems3, variables.token)
 
-	get.Cart(cartBaseURL, *client, token)
+	get.Cart(cartBaseURL, *client, variables.token)
 
-	cartItems4 := get.CartItems(cartItemsBaseURL, *client, token)
+	cartItems4 := get.CartItems(cartItemsBaseURL, *client, variables.token)
 
-	add.TaxesToCart(cartItemsBaseURL, client, cartItems4, token)
+	add.TaxesToCart(cartItemsBaseURL, client, cartItems4, variables.token)
 
-	taxAmountAfterSecondAdd := get.Cart(cartBaseURL, *client, token)
+	taxAmountAfterSecondAdd := get.Cart(cartBaseURL, *client, variables.token)
 
 	taxAmounts = append(taxAmounts, taxAmountAfterSecondAdd)
 
