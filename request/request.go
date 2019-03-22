@@ -29,7 +29,8 @@ func GenericRequest(path string, client http.Client, method string, payload io.R
 	res.Body.Close()
 
 	if res.StatusCode != expectedCode {
-        fmt.Println("Bad response code from", name, ":", res.StatusCode, http.StatusText(res.StatusCode))
+		fmt.Println("Bad response code from", name, ":", res.StatusCode, http.StatusText(res.StatusCode))
+		fmt.Println(string(response))
 	}
 	
 	return response

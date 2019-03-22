@@ -31,7 +31,8 @@ func AsyncGenericRequest(wg *sync.WaitGroup, ID int, path string, client http.Cl
 	res.Body.Close()
 
 	if res.StatusCode != expectedCode {
-        fmt.Println("Bad response code from", name, ":", res.StatusCode, http.StatusText(res.StatusCode))
+		fmt.Println("Bad response code from", name, ":", res.StatusCode, http.StatusText(res.StatusCode))
+		fmt.Println(string(response))
 	}
 	
 	return response
