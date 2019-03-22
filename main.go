@@ -8,16 +8,15 @@ import (
 	"net/http"
 )
 
-func testTaxItems() {
+func testTaxItems(variables Config) bool {
 
 	fmt.Println("Starting the application...")
 
-	variables := NewConfig()
 	cartBaseURL := variables.baseURL + "/carts/" + variables.cartID
 	cartItemsBaseURL := variables.baseURL + "/carts/" + variables.cartID + "/items"
 
 	client := &http.Client{}
-	taxAmounts := []int{}
+	taxAmounts := map[string]int{}
 
 	get.Cart(cartBaseURL, *client, variables.token)
 
@@ -37,7 +36,7 @@ func testTaxItems() {
 
 	taxAmountAfterFirstAdd := get.Cart(cartBaseURL, *client, variables.token)
 
-	taxAmounts = append(taxAmounts, taxAmountAfterFirstAdd)
+	taxAmounts["first"] = taxAmountAfterFirstAdd
 
 	cartItems3 := get.CartItems(cartItemsBaseURL, *client, variables.token)
 
@@ -51,19 +50,32 @@ func testTaxItems() {
 
 	taxAmountAfterSecondAdd := get.Cart(cartBaseURL, *client, variables.token)
 
-	taxAmounts = append(taxAmounts, taxAmountAfterSecondAdd)
+	taxAmounts["second"] = taxAmountAfterSecondAdd
 
 	fmt.Println(taxAmounts)
 
-	if taxAmounts[0] != taxAmounts[1] {
-		fmt.Println("innacurate taxes found")
+	if taxAmounts["first"] != taxAmounts["second"] {
+		return false
 	}
 
 	fmt.Println("Terminating the application...")
+	
+	return true
 }
 
 func main() {
-	for i := 0; i < 25; i++ {
-		testTaxItems()
+	variables := NewConfig()
+
+	results := map[string]int{"accurate": 0, "innacurate": 0}
+
+	for i := 0; i < variables.runs; i++ {
+		if(testTaxItems(variables) == true) {
+			results["accurate"]++
+		} else {
+			results["innacurate"]++
+		}
 	}
+
+	fmt.Println(results)
+
 }

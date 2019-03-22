@@ -37,8 +37,6 @@ func Cart(baseURL string, client http.Client, token string) int {
 
 	if unmarshallErr != nil {
 		fmt.Printf("Error reading get cart response, failed with %s\n", unmarshallErr)
-	} else {
-		fmt.Println("Tax amount is:", cart.Data.Meta.DisplayPrice.Tax.Amount)
 	}
 
 	return cart.Data.Meta.DisplayPrice.Tax.Amount

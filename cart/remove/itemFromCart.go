@@ -15,6 +15,7 @@ func ItemFromCart(wg *sync.WaitGroup, ID int, baseURL string, client http.Client
 	itemID := item.ID
 	fullURL := baseURL + "/" + itemID
 
+
 	req, err := http.NewRequest("DELETE", fullURL, nil)
 	req.Header.Set("Authorization", token)
 	req.Header.Set("content-type", "application/json")
@@ -27,7 +28,7 @@ func ItemFromCart(wg *sync.WaitGroup, ID int, baseURL string, client http.Client
 
 	res.Body.Close()
 
-	if res.StatusCode != 204 {
+	if res.StatusCode != 200 {
         fmt.Println("Bad response code from remove.ItemFromCart:", res.StatusCode, http.StatusText(res.StatusCode))
     }
 }
