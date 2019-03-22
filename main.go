@@ -6,13 +6,10 @@ import (
 	"net/http"
 )
 
-
-
 func main() {
 	variables := config.NewConfig()
 	client := &http.Client{}
-	
-	// tests.RunTaxItemsTest(variables)
 
+	tests.RunTaxItemsTest(variables)
 	tests.TestCheckout(variables, client)
 }
