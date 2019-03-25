@@ -2,11 +2,12 @@ package tests
 
 import (
 	"fmt"
+	"net/http"
+
 	"github.com/matthew1809/cart-tests/cart/add"
 	"github.com/matthew1809/cart-tests/cart/get"
 	"github.com/matthew1809/cart-tests/cart/remove"
 	"github.com/matthew1809/cart-tests/config"
-	"net/http"
 )
 
 // RunTaxItemsTest runs the test for tax items
@@ -14,7 +15,7 @@ func TestTaxItems(variables config.Config, client *http.Client) {
 	results := map[string]int{"accurate": 0, "inaccurate": 0}
 
 	for i := 0; i < variables.Runs; i++ {
-		if(RunTestTaxItems(variables, client) == true) {
+		if RunTestTaxItems(variables, client) == true {
 			results["accurate"]++
 		} else {
 			results["innacurate"]++
@@ -33,7 +34,7 @@ func RunTestTaxItems(variables config.Config, client *http.Client) bool {
 
 	cartItems := get.CartItems(variables.BaseURL, *client, variables.Token, variables.CartID)
 
-	if(len(cartItems.Data) > 0) { 
+	if len(cartItems.Data) > 0 {
 		remove.AllProductsFromCart(variables.BaseURL, client, cartItems, variables.Token, variables.CartID)
 		get.CartItems(variables.BaseURL, *client, variables.Token, variables.CartID)
 	}
@@ -48,7 +49,7 @@ func RunTestTaxItems(variables config.Config, client *http.Client) bool {
 
 	taxAmountAfterFirstAdd := get.Cart(variables.BaseURL, *client, variables.Token, variables.CartID)
 
-	taxAmounts["first"] = taxAmountAfterFirstAdd
+	taxAmounts["first"] = taxAmountAfterFirstAdd.Data.Meta.DisplayPrice.Tax.Amount
 
 	cartItems3 := get.CartItems(variables.BaseURL, *client, variables.Token, variables.CartID)
 
@@ -62,7 +63,7 @@ func RunTestTaxItems(variables config.Config, client *http.Client) bool {
 
 	taxAmountAfterSecondAdd := get.Cart(variables.BaseURL, *client, variables.Token, variables.CartID)
 
-	taxAmounts["second"] = taxAmountAfterSecondAdd
+	taxAmounts["second"] = taxAmountAfterSecondAdd.Data.Meta.DisplayPrice.Tax.Amount
 
 	fmt.Println(taxAmounts)
 
@@ -71,6 +72,6 @@ func RunTestTaxItems(variables config.Config, client *http.Client) bool {
 	}
 
 	fmt.Println("Terminating the application...")
-	
+
 	return true
 }

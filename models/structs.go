@@ -45,6 +45,51 @@ type Meta struct {
 	} `json:"timestamps"`
 }
 
+type CartItemMeta struct {
+	DisplayPrice struct {
+		WithTax struct {
+			Unit struct {
+				Amount    int    `json:"amount"`
+				Currency  string `json:"currency"`
+				Formatted string `json:"formatted"`
+			} `json:"unit"`
+			Value struct {
+				Amount    int    `json:"amount"`
+				Currency  string `json:"currency"`
+				Formatted string `json:"formatted"`
+			} `json:"value"`
+		} `json:"with_tax"`
+		WithoutTax struct {
+			Unit struct {
+				Amount    int    `json:"amount"`
+				Currency  string `json:"currency"`
+				Formatted string `json:"formatted"`
+			} `json:"unit"`
+			Value struct {
+				Amount    int    `json:"amount"`
+				Currency  string `json:"currency"`
+				Formatted string `json:"formatted"`
+			} `json:"value"`
+		} `json:"without_tax"`
+		Tax struct {
+			Unit struct {
+				Amount    int    `json:"amount"`
+				Currency  string `json:"currency"`
+				Formatted string `json:"formatted"`
+			} `json:"unit"`
+			Value struct {
+				Amount    int    `json:"amount"`
+				Currency  string `json:"currency"`
+				Formatted string `json:"formatted"`
+			} `json:"value"`
+		} `json:"tax"`
+	} `json:"display_price"`
+	Timestamps struct {
+		CreatedAt time.Time `json:"created_at"`
+		UpdatedAt time.Time `json:"updated_at"`
+	} `json:"timestamps"`
+}
+
 type CartItemResponse struct {
 	Data []CartItem `json: "data"`
 }
@@ -60,6 +105,7 @@ type CartItem struct {
 	Value         Value         `json: "value"`
 	Image         Image         `json: "image"`
 	Relationships Relationships `json: "relationships"`
+	Meta          CartItemMeta  `json: "meta"`
 }
 
 type Relationships struct {
@@ -346,4 +392,89 @@ type PromotionsResponse struct {
 	Data []struct {
 		Promotion
 	}
+}
+
+type OrderItemResponse struct {
+	Data []struct {
+		OrderItem
+	}
+}
+
+type OrderItem struct {
+	Type      string `json:"type"`
+	ID        string `json:"id"`
+	Quantity  int    `json:"quantity"`
+	ProductID string `json:"product_id"`
+	Name      string `json:"name"`
+	Sku       string `json:"sku"`
+	UnitPrice struct {
+		Amount      int    `json:"amount"`
+		Currency    string `json:"currency"`
+		IncludesTax bool   `json:"includes_tax"`
+	} `json:"unit_price"`
+	Value struct {
+		Amount      int    `json:"amount"`
+		Currency    string `json:"currency"`
+		IncludesTax bool   `json:"includes_tax"`
+	} `json:"value"`
+	Links struct {
+	} `json:"links"`
+	Meta struct {
+		DisplayPrice struct {
+			WithTax struct {
+				Unit struct {
+					Amount    int    `json:"amount"`
+					Currency  string `json:"currency"`
+					Formatted string `json:"formatted"`
+				} `json:"unit"`
+				Value struct {
+					Amount    int    `json:"amount"`
+					Currency  string `json:"currency"`
+					Formatted string `json:"formatted"`
+				} `json:"value"`
+			} `json:"with_tax"`
+			WithoutTax struct {
+				Unit struct {
+					Amount    int    `json:"amount"`
+					Currency  string `json:"currency"`
+					Formatted string `json:"formatted"`
+				} `json:"unit"`
+				Value struct {
+					Amount    int    `json:"amount"`
+					Currency  string `json:"currency"`
+					Formatted string `json:"formatted"`
+				} `json:"value"`
+			} `json:"without_tax"`
+			Tax struct {
+				Unit struct {
+					Amount    int    `json:"amount"`
+					Currency  string `json:"currency"`
+					Formatted string `json:"formatted"`
+				} `json:"unit"`
+				Value struct {
+					Amount    int    `json:"amount"`
+					Currency  string `json:"currency"`
+					Formatted string `json:"formatted"`
+				} `json:"value"`
+			} `json:"tax"`
+		} `json:"display_price"`
+		Timestamps struct {
+			CreatedAt time.Time `json:"created_at"`
+			UpdatedAt time.Time `json:"updated_at"`
+		} `json:"timestamps"`
+	} `json:"meta"`
+	Relationships struct {
+		CartItem struct {
+			Data struct {
+				Type string `json:"type"`
+				ID   string `json:"id"`
+			} `json:"data"`
+		} `json:"cart_item"`
+		Taxes struct {
+			Data []struct {
+				Type string `json:"type"`
+				ID   string `json:"id"`
+			} `json:"data"`
+		} `json:"taxes"`
+	} `json:"relationships"`
 }
