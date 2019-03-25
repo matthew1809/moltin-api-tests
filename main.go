@@ -29,6 +29,8 @@ func runTest(test string, clientID string, clientSecret string) {
 	switch test {
 	case "TestPromotions":
 		tests.TestPromotions(variables, client)
+	case "TestPromotionItems":
+		tests.TestPromotionItems(variables, client)
 	case "TestTaxItems":
 		tests.TestTaxItems(variables, client)
 	case "TestCheckout":

@@ -275,3 +275,75 @@ type Tokens struct {
 	ClientID     string `json:"client_id"`
 	ClientSecret string `json: "client_secret"`
 }
+
+type CreatePromotion struct {
+	Type        string `json:"type"`
+	Title       string `json:"title"`
+	Name        string `json:"name"`
+	Description string `json:"description"`
+	Enabled     bool   `json:"enabled"`
+	Schema      struct {
+		Currencies []struct {
+			Currency string `json:"currency"`
+			Amount   int    `json:"amount"`
+		} `json:"currencies"`
+	} `json:"schema"`
+	Start time.Time `json:"start"`
+	End   time.Time `json:"end"`
+}
+
+type Promotion struct {
+	Type          string `json:"type"`
+	PromotionType string `json:"promotion_type"`
+	ID            string `json:"id"`
+	Name          string `json:"name"`
+	Description   string `json:"description"`
+	Enabled       bool   `json:"enabled"`
+	Schema        Schema `json:"schema"`
+	Start         string `json:"start"`
+	End           string `json:"end"`
+	Meta          struct {
+		Timestamps `json:"timestamps"`
+	} `json:"meta"`
+}
+
+type CreatePromotionResponse struct {
+	Data struct {
+		Type          string `json:"type"`
+		PromotionType string `json:"promotion_type"`
+		ID            string `json:"id"`
+		Name          string `json:"name"`
+		Description   string `json:"description"`
+		Enabled       bool   `json:"enabled"`
+		Schema        Schema `json:"schema"`
+		Start         string `json:"start"`
+		End           string `json:"end"`
+		Meta          struct {
+			Timestamps `json:"timestamps"`
+		} `json:"meta"`
+	} `json:"data"`
+}
+
+type Schema struct {
+	Currencies []Currency `json:"currencies"`
+}
+
+type Currencies struct {
+	Currency []Currency
+}
+
+type Currency struct {
+	Currency string `json:"currency"`
+	Amount   int    `json:"amount"`
+}
+
+type Timestamps struct {
+	CreatedAt string `json:"created_at"`
+	UpdatedAt string `json:"updated_at"`
+}
+
+type PromotionsResponse struct {
+	Data []struct {
+		Promotion
+	}
+}
