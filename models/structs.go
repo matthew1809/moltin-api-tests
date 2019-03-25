@@ -17,30 +17,32 @@ type CartResponse struct {
 		Links struct {
 			Self string `json:"self"`
 		} `json:"links"`
-		Meta struct {
-			DisplayPrice struct {
-				WithTax struct {
-					Amount    int    `json:"amount"`
-					Currency  string `json:"currency"`
-					Formatted string `json:"formatted"`
-				} `json:"with_tax"`
-				WithoutTax struct {
-					Amount    int    `json:"amount"`
-					Currency  string `json:"currency"`
-					Formatted string `json:"formatted"`
-				} `json:"without_tax"`
-				Tax struct {
-					Amount    int    `json:"amount"`
-					Currency  string `json:"currency"`
-					Formatted string `json:"formatted"`
-				} `json:"tax"`
-			} `json:"display_price"`
-			Timestamps struct {
-				CreatedAt time.Time `json:"created_at"`
-				UpdatedAt time.Time `json:"updated_at"`
-			} `json:"timestamps"`
-		} `json:"meta"`
+		Meta `json:"meta"`
 	} `json:"data"`
+}
+
+type Meta struct {
+	DisplayPrice struct {
+		WithTax struct {
+			Amount    int    `json:"amount"`
+			Currency  string `json:"currency"`
+			Formatted string `json:"formatted"`
+		} `json:"with_tax"`
+		WithoutTax struct {
+			Amount    int    `json:"amount"`
+			Currency  string `json:"currency"`
+			Formatted string `json:"formatted"`
+		} `json:"without_tax"`
+		Tax struct {
+			Amount    int    `json:"amount"`
+			Currency  string `json:"currency"`
+			Formatted string `json:"formatted"`
+		} `json:"tax"`
+	} `json:"display_price"`
+	Timestamps struct {
+		CreatedAt time.Time `json:"created_at"`
+		UpdatedAt time.Time `json:"updated_at"`
+	} `json:"timestamps"`
 }
 
 type CartItemResponse struct {
@@ -49,7 +51,7 @@ type CartItemResponse struct {
 
 type CartItem struct {
 	ID            string        `json: "id"`
-	Type      	  string        `json: "type"`
+	Type          string        `json: "type"`
 	Description   string        `json: "description"`
 	Sku           string        `json: "sku"`
 	Quantity      int           `json: "quantity"`
@@ -93,15 +95,15 @@ type TopLevelRequest struct {
 }
 
 type AddToCartRequest struct {
-	ID	string `json:"id"`
-	Quantity int `json:"quantity"`
+	ID       string `json:"id"`
+	Quantity int    `json:"quantity"`
 	ItemType string `json:"type"`
 }
 
 type CheckoutRequest struct {
-		Customer `json:"customer"`
-		BillingAddress `json:"billing_address"`
-		ShippingAddress `json:"shipping_address"`
+	Customer        `json:"customer"`
+	BillingAddress  `json:"billing_address"`
+	ShippingAddress `json:"shipping_address"`
 }
 
 type BillingAddress struct {
@@ -209,10 +211,67 @@ type AddPromotionItem struct {
 	Code string `json:"code"`
 }
 
+type OrderResponse struct {
+	Data struct {
+		Type     string `json:"type"`
+		ID       string `json:"id"`
+		Status   string `json:"status"`
+		Payment  string `json:"payment"`
+		Shipping string `json:"shipping"`
+		Customer
+		ShippingAddress
+		BillingAddress
+		Links struct {
+		} `json:"links"`
+		Meta          `json:"meta"`
+		Relationships struct {
+			Items struct {
+				Data []struct {
+					Type string `json:"type"`
+					ID   string `json:"id"`
+				} `json:"data"`
+			} `json:"items"`
+		} `json:"relationships"`
+	} `json:"data"`
+}
+
+type Order struct {
+	Type     string `json:"type"`
+	ID       string `json:"id"`
+	Status   string `json:"status"`
+	Payment  string `json:"payment"`
+	Shipping string `json:"shipping"`
+	Customer
+	ShippingAddress
+	BillingAddress
+	Links struct {
+	} `json:"links"`
+	Meta          `json:"meta"`
+	Relationships struct {
+		Items struct {
+			Data []struct {
+				Type string `json:"type"`
+				ID   string `json:"id"`
+			} `json:"data"`
+		} `json:"items"`
+	} `json:"relationships"`
+}
+
+type OrdersResponse struct {
+	Data []struct {
+		Order
+	}
+}
+
 type AuthenticationResponse struct {
-	Expires int
-	Identifier string
-	ExpiresIn int `json:"expires_in"`
+	Expires     int
+	Identifier  string
+	ExpiresIn   int    `json:"expires_in"`
 	AccessToken string `json:"access_token"`
-	TokenType string `json:"token_type"`
+	TokenType   string `json:"token_type"`
+}
+
+type Tokens struct {
+	ClientID     string `json:"client_id"`
+	ClientSecret string `json: "client_secret"`
 }

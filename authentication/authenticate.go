@@ -1,19 +1,21 @@
 package authentication
 
 import (
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"net/http"
 	"net/url"
-	"io/ioutil"
-	"encoding/json"
+
 	"github.com/matthew1809/cart-tests/models"
 )
 
-func Authenticate() string {
-	res, err := http.PostForm("https://api.moltin.com/oauth/token",
-	url.Values{"client_id": {"9rDK38TcVqmvDzI7xtmRt44hQ6XZ0OWpMMYxxKWCdK"}, "client_secret": {"XYZ"}, "grant_type": {"client_credentials"}})
+// Authenticate returns a bearer token from the API
+func Authenticate(clientID string, clientSecret string) string {
 
+	values := url.Values{"client_id": {clientID}, "client_secret": {clientSecret}, "grant_type": {"client_credentials"}}
 
+	res, err := http.PostForm("https://api.moltin.com/oauth/token", values)
 	if err != nil {
 		fmt.Printf("Error making request, failed with %s\n", err)
 	}
@@ -28,6 +30,13 @@ func Authenticate() string {
 
 	if unmarshallErr != nil {
 		fmt.Printf("Error reading get cart items response, failed with %s\n", unmarshallErr)
+	}
+
+	res.Body.Close()
+
+	if res.StatusCode != 200 {
+		fmt.Println("Authentication failed:", string(response))
+		return "0"
 	}
 
 	return authResponse.AccessToken

@@ -27,7 +27,6 @@ func AsyncGenericRequest(wg *sync.WaitGroup, ID int, path string, client http.Cl
 		fmt.Printf("Error reading response, failed with %s\n", err)
 	}
 
-	// res.Body.Close()
 	res.Body.Close()
 
 	if res.StatusCode != expectedCode {
