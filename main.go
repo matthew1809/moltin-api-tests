@@ -11,10 +11,9 @@ import (
 	"os"
 	"strings"
 
-	"github.com/matthew1809/cart-tests/models"
-
 	"github.com/fatih/color"
 	"github.com/matthew1809/cart-tests/config"
+	"github.com/matthew1809/cart-tests/models"
 	"github.com/matthew1809/cart-tests/tests"
 )
 
@@ -53,7 +52,6 @@ func readAuthFile() models.Tokens {
 }
 
 func main() {
-
 	test := flag.String("test", "", "a valid test name")
 	flag.Parse()
 
@@ -94,8 +92,6 @@ func main() {
 			}
 
 			runTest(*test, trimmedClientID, trimmedClientSecret)
-
 		}
 	}
-
 }
