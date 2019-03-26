@@ -140,6 +140,10 @@ type TopLevelRequest struct {
 	Data interface{} `json:"data"`
 }
 
+type TopLevelResponse struct {
+	Data map[string]interface{} `json:"data"`
+}
+
 type AddToCartRequest struct {
 	ID       string `json:"id"`
 	Quantity int    `json:"quantity"`
@@ -249,6 +253,7 @@ type CheckoutResponse struct {
 				} `json:"data"`
 			} `json:"items"`
 		} `json:"relationships"`
+		Flows map[string]interface{} `json:"flows"`
 	} `json:"data"`
 }
 
@@ -264,9 +269,9 @@ type OrderResponse struct {
 		Status   string `json:"status"`
 		Payment  string `json:"payment"`
 		Shipping string `json:"shipping"`
-		Customer
-		ShippingAddress
-		BillingAddress
+		Customer `json:"customer"`
+		ShippingAddress `json:"shipping_address"`
+		BillingAddress `json:"billing_address"`
 		Links struct {
 		} `json:"links"`
 		Meta          `json:"meta"`
@@ -279,6 +284,9 @@ type OrderResponse struct {
 			} `json:"items"`
 		} `json:"relationships"`
 	} `json:"data"`
+	Flows struct {
+		TopLevelResponse
+	}
 }
 
 type Order struct {
@@ -287,9 +295,9 @@ type Order struct {
 	Status   string `json:"status"`
 	Payment  string `json:"payment"`
 	Shipping string `json:"shipping"`
-	Customer
-	ShippingAddress
-	BillingAddress
+	Customer `json:"customer"`
+	ShippingAddress `json:"shipping_address"`
+	BillingAddress `json:"billing_address"`
 	Links struct {
 	} `json:"links"`
 	Meta          `json:"meta"`
@@ -301,6 +309,7 @@ type Order struct {
 			} `json:"data"`
 		} `json:"items"`
 	} `json:"relationships"`
+	Flows map[string]interface{} `json:"flows"`
 }
 
 type OrdersResponse struct {
